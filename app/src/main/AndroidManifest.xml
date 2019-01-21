@@ -3,10 +3,10 @@
     package="xyz.hiroshifuu.speechapp">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!--Permission for GPS-->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!--Permission for GPS-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!--Permission for GPS-->
 
     <application
         android:allowBackup="true"

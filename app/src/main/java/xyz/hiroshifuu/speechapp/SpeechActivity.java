@@ -48,7 +48,7 @@ import java.util.concurrent.ExecutionException;
 public class SpeechActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private static final int SERVERPORT = 5588;
-    private static final String SERVER_IP = "172.23.65.102";
+    private static final String SERVER_IP = "172.23.39.171";
     //private TextView status_tv;
     private TextView result_tv;
     private EditText result_tv2;
@@ -59,10 +59,10 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
     private TextToSpeech tts;
     private String bus = "No bus";
     public String qryresp, res;
-    private Button location;
-    private TextView textView;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+    private Button location; //Press to send location to server
+    private TextView textView; //Show location in textview
+    private LocationManager locationManager; //instance to access location services
+    private LocationListener locationListener;//listen for location changes
     private ListView listView;
     private ArrayList<SpeechItem> listItems;
 
@@ -77,11 +77,12 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
         setClickListeners();
 
         tts = new TextToSpeech(getApplicationContext(), this);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);//initialise locationManager
+        locationListener = new LocationListener() {//initialise locationlistenser
+
             @Override
-            public void onLocationChanged(Location location) {
-                textView.append("\n" + location.getLatitude() + " " + location.getLongitude());
+            public void onLocationChanged(Location location) {//method check whenever location is updated
+                textView.append("\n" + location.getLatitude() + " " + location.getLongitude());//append textview with location coordinate
             }
 
             @Override
@@ -95,18 +96,18 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
             }
 
             @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            public void onProviderDisabled(String provider) {//check if the GPS is turned off
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);//send user to setting interface
                 startActivity(intent);
             }
         };
-
+            //add user permission check
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.INTERNET
-                }, 10);
+                }, 10);//request code is a integer, indicator for permission
             }
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -117,6 +118,7 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
             // for ActivityCompat#requestPermissions for more details.
         } else {
             locationManager.requestLocationUpdates("network", 1000, 0, locationListener);
+            // Make a location request. provider can be GPS or network, minTime how often it refresh, minDistance the min distance
             configureButton();
         }
 
@@ -131,9 +133,10 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
 
 
     @Override
+    //handle the request permission result
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case 10:
+            case 10://same as integer above
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         locationManager.requestLocationUpdates("network", 1000, 0, locationListener);
@@ -148,7 +151,7 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
             @Override
             public void onClick(View view) {
                 String loc = textView.getText().toString();
-                Client myClient = new Client(SERVER_IP, SERVERPORT, loc);
+                Client myClient = new Client(SERVER_IP, SERVERPORT, loc);//send location to sever
                 myClient.execute();
             }
         });
