@@ -82,7 +82,11 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
 
             @Override
             public void onLocationChanged(Location location) {//method check whenever location is updated
-                textView.append("\n" + location.getLatitude() + " " + location.getLongitude());//append textview with location coordinate
+//                textView.append("\n" + location.getLatitude() + " " + location.getLongitude());//append textview with location coordinate
+                textView.setText(location.getLatitude() + " " + location.getLongitude());
+                Log.d("LocationUpdate", bus + " " + location.getLatitude() + " " + location.getLongitude());
+                Client myClient = new Client(SERVER_IP, SERVERPORT, bus + " " + location.getLatitude() + " " + location.getLongitude());//send location to sever
+                myClient.execute();
             }
 
             @Override
@@ -101,7 +105,7 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
                 startActivity(intent);
             }
         };
-            //add user permission check
+//            //add user permission check
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{
@@ -119,18 +123,20 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
         } else {
             locationManager.requestLocationUpdates("network", 1000, 0, locationListener);
             // Make a location request. provider can be GPS or network, minTime how often it refresh, minDistance the min distance
-            configureButton();
+//            configureButton();
         }
 
         listView = findViewById(R.id.list);
         listItems = new ArrayList<SpeechItem>();
         SpeechItem item;
-        item = new SpeechItem("Hi, how can I help?", false);
+        item = new SpeechItem("Hi, how can I help?", false, false);
+        listItems.add(item);
+//        item = new SpeechItem("<a href='https://www.google.com/maps/dir/?api=1&origin=Sembwang&destination=Clementi&travelmode=transit'> Google </a>", false, true);
+        item = new SpeechItem("https://www.google.com/maps/dir/?api=1&origin=Sembwang&destination=Clementi&travelmode=transit", false, true);
         listItems.add(item);
         ArrayAdapter ad = new CustomAdapter(listItems, getApplicationContext());
         listView.setAdapter(ad);
     }
-
 
     @Override
     //handle the request permission result
@@ -140,7 +146,7 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         locationManager.requestLocationUpdates("network", 1000, 0, locationListener);
-                        configureButton();
+//                        configureButton();
                     }
                 }
         }
@@ -210,8 +216,7 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
     }
 
     private void sendMessage(String text) {
-
-        listItems.add(new SpeechItem(text, true));
+        listItems.add(new SpeechItem(text, true, false));
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
         try {
             myClient = new Client(SERVER_IP, SERVERPORT, text);
@@ -226,7 +231,7 @@ public class SpeechActivity extends AppCompatActivity implements TextToSpeech.On
             e.printStackTrace();
         }
         TTS_speak(qryresp);
-        listItems.add(new SpeechItem(qryresp, false));
+        listItems.add(new SpeechItem(qryresp, false, false));
         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
 
         final ScrollView scrollview = (findViewById(R.id.scrollview));

@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\zhant\\OneDrive\\Desktop\\SpeechApp_1101\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\zhant\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\74ed36701887e4a0f0913ec6ba012b6b\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\zhant\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\4d0ed6059b396706c398f7f114ba3071\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\zhant\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\91714acfc3548da47c66a05e904bf66e\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\zhant\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\4244bd119bcd4df866efdde1c68bee0b\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
